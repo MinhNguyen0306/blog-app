@@ -1,0 +1,82 @@
+@use './config/index' as *;
+
+* {
+    padding: 0;
+    margin: 0;
+    box-sizing: border-box;
+}
+
+body {
+    background-color: $body-bg;
+    color: white;
+    display: grid;
+    justify-items: center;
+    align-items: center;
+    min-height: 100vh;
+}
+
+input {
+    outline: none;
+}
+
+a {
+    text-decoration: none;
+    color: unset;
+}
+
+.registerContainer {
+    width: 350px;
+    margin: 0 auto;
+    border-radius: $border-radius;
+    padding: 3rem;
+    border: 1px solid gray;
+    background-color: $main-color;
+
+    h1 {
+        text-align: center;
+        margin-bottom: 2rem;
+    }
+
+    .registerForm {
+        width: 100%;
+        @include flex(unset, unset);
+        flex-direction: column;
+        row-gap: 2rem;
+
+        .registerField {
+            width: 100%;
+            margin-bottom: 1.5rem;
+
+            input {
+                width: 100%;
+                height: 40px;
+                border-radius: $border-radius;
+                border: 1px solid gray;
+                background-color: $main-color;
+                padding: 0 1rem;
+                color: white;
+            }
+        }
+
+    }
+
+    .login {
+        text-align: center;
+        margin-top: 1rem;
+    }
+
+    .login a {
+        font-weight: 700;
+        cursor: pointer;
+        color: blue;
+    }
+
+    .login a:hover {
+        color: rgb(0, 128, 255);
+        text-decoration: underline;
+    }
+
+    span {
+        text-align: center;
+    }
+}

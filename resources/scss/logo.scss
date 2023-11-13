@@ -1,0 +1,14 @@
+@use './config/index' as *;
+
+.logoContainer {
+    @include flex(start, center);
+
+    img {
+        max-width: 100px;
+    }
+
+    h2 {
+        font-size: xx-large;
+        font-weight: 700;
+    }
+}

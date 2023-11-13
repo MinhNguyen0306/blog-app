@@ -1,0 +1,43 @@
+@use './config/index' as *;
+
+* {
+    padding: 0;
+    margin: 0;
+    box-sizing: border-box;
+}
+
+body {
+    background-color: $body-bg;
+    color: $txt-color;
+}
+
+a {
+    text-decoration: none;
+    color: unset;
+}
+
+button,
+input {
+    outline: 0;
+}
+
+ul {
+    list-style-type: none;
+}
+
+img {
+    max-width: 100%;
+}
+
+.container {
+    @include flex(start, start);
+
+    max-width: 1350px;
+    margin: auto;
+}
+
+.icon {
+    max-width: 24px;
+}
+
+

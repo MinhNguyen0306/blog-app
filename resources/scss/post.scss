@@ -1,0 +1,85 @@
+@use './config/index' as *;
+
+.postContainer {
+    width: 100%;
+    padding: 1.25rem;
+    @include flex(start, center);
+
+    column-gap: 0.75rem;
+    border-bottom: 1px solid gray;
+
+    img {
+        width: 35px;
+        height: 35px;
+        border-radius: 50%;
+        align-self: flex-start;
+        background-color: aliceblue;
+        object-fit: contain;
+    }
+
+    .postInfo {
+        flex: 1;
+        @include flex(start, start);
+
+        flex-direction: column;
+        row-gap: 1rem;
+
+        .postHeader {
+            width: 100%;
+
+            h3, span {
+                display: inline;
+                margin-right: .5rem;
+            }
+
+            i {
+                display: inline-block;
+                width: 0.2rem;
+                height: 0.2rem;
+                margin-right: 0.285rem;
+                vertical-align: middle;
+                border-radius: 50%;
+                background-color: greenyellow;
+            }
+
+            span, i {
+                color: gray;
+            }
+        }
+
+        .postAction {
+            width: 100%;
+            color: gray;
+            font-size: smaller;
+
+            @include flex(space-between, center);
+
+            .action {
+                flex: 1;
+                cursor: pointer;
+
+                .icon, span {
+                    display: inline;
+                    vertical-align: middle;
+                    margin-right: .25rem;
+                }
+
+                .icon {
+                    max-width: 18px;
+                }
+            }
+
+            #likeAction:hover {
+                color: rgb(228, 27, 135);
+            }
+
+            #shareAction:hover {
+                color: rgb(2, 178, 2);
+            }
+
+            #commentAction:hover {
+                color: rgb(0, 115, 255);
+            }
+        }
+    }
+}
