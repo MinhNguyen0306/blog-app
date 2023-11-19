@@ -23,20 +23,26 @@
 
         <form action="{{ route('register') }}" class="registerForm" method="POST">
             @csrf
-            <input type="text" name="email" placeholder="Email" />
-            @error('email')
-                <span>{{ $message }}</span>
-            @enderror
+            <div class="registerField">
+                <input type="text" name="email" placeholder="Email" />
+                @error('email')
+                    <span class="errorMessage">{{ $message }}</span>
+                @enderror
+            </div>
 
-            <input type="text" name="name" placeholder="Ten day du" />
-            @error('name')
-                <span>{{ $message }}</span>
-            @enderror
+            <div class="registerField">
+                <input type="text" name="name" placeholder="Ten day du" />
+                @error('name')
+                    <span class="errorMessage">{{ $message }}</span>
+                @enderror
+            </div>
 
-            <input type="text" name="password" placeholder="Password" />
-            @error('password')
-                <span>{{ $message }}</span>
-            @enderror
+            <div class="registerField">
+                <input type="text" name="password" placeholder="Password" />
+                @error('password')
+                    <span class="errorMessage">{{ $message }}</span>
+                @enderror
+            </div>
 
             <div style="width: 100%; display: flex; flex-direction: column">
                 <x-common.button type="submit">

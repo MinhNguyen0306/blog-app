@@ -3,14 +3,17 @@
 namespace App\Http\Controllers;
 
 use App\Http\Requests\PostRequest;
-
+use App\Models\Category;
 use App\Models\Post;
+use App\Models\Share;
 use Illuminate\Database\Eloquent\ModelNotFoundException;
+use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Auth;
 use Throwable;
 
 class PostController extends Controller
 {
-    public function index()
+    public function home()
     {
         $posts = Post::all()->reject(function (Post $post) {
             return $post->isPublished === false;
@@ -18,7 +21,20 @@ class PostController extends Controller
             return $post;
         });
 
-        return view('post.index', ['posts' => $posts]);
+        $shares = Share::all()->reject(function (Share $share) {
+            return $share->isPublished === false;
+        })->map(function (Share $share) {
+            return $share;
+        });
+
+
+        $categories = Category::all();
+
+        return view('home', [
+            'posts' => $posts,
+            'shares' => $shares,
+            'categories' => $categories
+        ]);
     }
 
     public function create()
@@ -31,49 +47,47 @@ class PostController extends Controller
         return view('post.edit', ['post' => $post]);
     }
 
-    public function detail(Post $post)
+    public function detail($postId)
     {
-        if (!$post->isPublished) {
-            return redirect()->back()->with([
-                'fail' => "This post is unpublished"
-            ]);
-        }
+        // if (!$post->isPublished) {
+        //     return redirect()->back()->with([
+        //         'fail' => "This post is unpublished"
+        //     ]);
+        // }
 
-        if (!$post->onlyMember) {
-            return redirect()->back()->with([
-                'fail' => "This post is for members only"
-            ]);
-        }
+        // if (!$post->onlyMember) {
+        //     return redirect()->back()->with([
+        //         'fail' => "This post is for members only"
+        //     ]);
+        // }
+        $post = Post::findOrFail($postId);
 
         return view('post.detail', ['post' => $post]);
     }
 
-    public function store(PostRequest $postRequest)
+    public function store(PostRequest $request)
     {
-        dd($postRequest);
-        $postRequest->validated();
+        $request->validated();
 
-        $post = new Post();
-        $post->title = $postRequest->title;
-        $post->content = $postRequest->content;
-
-        try {
-            $postSaved = Post::saved($post);
-
-            if ($postSaved) {
-                return redirect()->back()->with([
-                    'success' => 'Tao post thanh cong'
-                ]);
-            }
-
-            return redirect()->back()->with([
-                'fail' => 'Tao post that bai'
-            ]);
-        } catch (Throwable $throw) {
-            return redirect()->back()->with([
-                'fail' => $throw->getMessage()
-            ]);
+        $newFile = '';
+        if ($request->has('image-upload')) {
+            $file = $request->file('image-upload');
+            $fileName = $file->hashName();
+            $newFile = time() . '-' . $fileName;
+            $file->move(public_path('/images'), $newFile);
         }
+
+        $request->merge(['image' => $newFile]);
+
+        $postSaved = Post::create($request->all());
+
+        if ($postSaved) {
+            toastr()->success('Dang bai thanh cong');
+        } else {
+            toastr()->error("Dang bai that bai");
+        }
+
+        return redirect()->back();
     }
 
     public function update(PostRequest $postRequest, $postId)

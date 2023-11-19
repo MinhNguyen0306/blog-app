@@ -2,6 +2,7 @@
 
 namespace App\Providers;
 
+use App\View\Components\common\Comment;
 use App\View\Components\common\Button;
 use App\View\Components\common\LeftContent;
 use App\View\Components\common\Logo;
@@ -42,5 +43,6 @@ class AppServiceProvider extends ServiceProvider
         Blade::component('mid-content', MidContent::class);
         Blade::component('right-content', RightContent::class);
         Blade::component('post', Post::class);
+        Blade::component('comment', Comment::class);
     }
 }

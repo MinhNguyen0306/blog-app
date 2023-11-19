@@ -15,7 +15,7 @@
             <h2>Dang ky goi Premiun</h2>
             <p>Đăng ký để mở khóa các tính năng mới và nếu đủ điều kiện, bạn sẽ được nhận một khoản chia sẻ doanh thu từ
                 quảng cáo.</p>
-            <x-common.button>
+            <x-common.button type="button">
                 Dang ky
             </x-common.button>
         </div>
@@ -35,7 +35,7 @@
                             <span>Minhnguyen@gmail.com</span>
                         </div>
                     </div>
-                    <x-common.button>
+                    <x-common.button type="button">
                         Follow
                     </x-common.button>
                 </li>

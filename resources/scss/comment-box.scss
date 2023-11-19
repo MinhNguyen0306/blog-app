@@ -1,6 +1,6 @@
 @use './config/index' as *;
 
-.postContainer {
+.commentContainer {
     width: 100%;
     padding: 1.25rem;
     @include flex(start, center);
@@ -23,14 +23,14 @@
         transition: .3s filter;
     }
 
-    .postInfo {
+    .commentInfo {
         flex: 1;
         @include flex(start, start);
 
         flex-direction: column;
         row-gap: 1rem;
 
-        .postHeader {
+        .commentHeader {
             width: 100%;
 
             h3, span {
@@ -43,6 +43,29 @@
                 text-underline-offset: .25rem;
             }
 
+            span {
+                color: gray;
+            }
+        }
+
+        .commentContent {
+            @include flex(start, start);
+            flex-direction: column;
+            row-gap: 2rem;
+
+            p {
+                word-break: break-all;
+            }
+        }
+
+        .commentAction {
+            width: 100%;
+            color: gray;
+            font-size: smaller;
+
+            @include flex(start, center);
+            column-gap: 1rem;
+
             i {
                 display: inline-block;
                 width: 0.2rem;
@@ -51,38 +74,10 @@
                 vertical-align: middle;
                 border-radius: 50%;
                 background-color: greenyellow;
-            }
-
-            span, i {
                 color: gray;
             }
-        }
-
-        .postContent {
-            @include flex(start, start);
-            flex-direction: column;
-            row-gap: 2rem;
-
-            p {
-                word-break: break-all;
-            }
-
-            .title {
-                font-weight: 700;
-                font-size: larger;
-                letter-spacing: .025rem;
-            }
-        }
-
-        .postAction {
-            width: 100%;
-            color: gray;
-            font-size: smaller;
-
-            @include flex(space-between, center);
 
             .action {
-                flex: 1;
                 cursor: pointer;
 
                 .icon, span {
@@ -111,6 +106,6 @@
     }
 }
 
-.postContainer:hover {
+.commentContainer:hover {
     background-color: $main-color;
 }

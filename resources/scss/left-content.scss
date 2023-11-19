@@ -66,6 +66,7 @@
     padding: .75rem 1rem;
     border-radius: $border-radius;
     cursor: pointer;
+    position: relative;
 
     @include flex(space-between, center);
 
@@ -79,11 +80,29 @@
             width: 35px;
             height: 35px;
             border-radius: 50%;
-            background-color: aliceblue;
+            border: 1px solid gray;
         }
+    }
+
+    .seeAccount {
+        position: absolute;
+        bottom: 105%;
+        left: 0;
+        background-color: rgb(231, 194, 144, 0.8);
+        color: black;
+        opacity: 0;
+        padding: 0.3rem .75rem;
+        border-radius: $border-radius;
+        font-size: x-small;
+        letter-spacing: .1rem;
     }
 }
 
 .profile:hover {
     background-color: $hover-color;
+
+    .seeAccount {
+        opacity: 100;
+        transition: .5s opacity;
+    }
 }

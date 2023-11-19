@@ -3,6 +3,7 @@
 .rightContainer {
     @include flex(start, start);
 
+    min-height: 100vh;
     flex-direction: column;
     flex: 1;
     row-gap: 1.5rem;

@@ -24,7 +24,7 @@ a {
     color: unset;
 }
 
-.registerContainer {
+.authContainer {
     width: 350px;
     margin: 0 auto;
     border-radius: $border-radius;
@@ -37,14 +37,30 @@ a {
         margin-bottom: 2rem;
     }
 
-    .registerForm {
+    .authForm {
         width: 100%;
         @include flex(unset, unset);
         flex-direction: column;
-        row-gap: 2rem;
 
-        .registerField {
+        a {
+            text-align: center;
+            margin-top: 1rem;
+            font-weight: 700;
+            cursor: pointer;
+            color: blue;
+        }
+
+        a:hover {
+            color: rgb(0, 128, 255);
+            text-decoration: underline;
+        }
+
+        .authField {
+            position: relative;
             width: 100%;
+            margin-bottom: 1.5rem;
+            @include flex(unset, unset);
+            flex-direction: column;
 
             input {
                 width: 100%;
@@ -68,6 +84,15 @@ a {
             }
         }
 
+        .forgotPassword {
+            text-align: right;
+            cursor: pointer;
+            margin-top: .5rem;
+        }
+
+        .forgotPassword:hover {
+            color: rgb(0, 128, 255);;
+        }
     }
 
     .register {
@@ -85,4 +110,25 @@ a {
         color: rgb(0, 128, 255);
         text-decoration: underline;
     }
+}
+
+.socialLogin {
+    width: 100%;
+    height: 45px;
+    border-radius: $border-radius;
+    background-color: $main-color;
+    color: white;
+    font-weight: 500;
+    border: 2px solid white;
+    display: grid;
+    align-content: center;
+    justify-items: center;
+    cursor: pointer;
+    margin-bottom: .5rem;
+}
+
+.socialLogin:hover {
+    border-color: rgb(0, 183, 0);
+    color: rgb(0, 183, 0);
+    background-color: #1a1a1a;
 }

@@ -1,8 +1,10 @@
 @use './config/index' as *;
 
 .midContainer {
-    position: sticky;
+    position: relative;
     min-height: 1500px;
 
     flex: 2;
+    border-left: 1px solid gray;
+    border-right: 1px solid gray;
 }

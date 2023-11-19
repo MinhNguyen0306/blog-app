@@ -16,9 +16,24 @@ class Post extends Model
     protected $table = 'posts';
     protected $primaryKey = 'id';
 
+    protected $fillable = [
+        'user_id',
+        'category_id',
+        'title',
+        'content',
+        'image',
+        'isPublished',
+        'onlyMember',
+    ];
+
     public function comments(): HasMany
     {
         return $this->hasMany(Comment::class);
+    }
+
+    public function shares(): HasMany
+    {
+        return $this->hasMany(Share::class);
     }
 
     public function user(): BelongsTo

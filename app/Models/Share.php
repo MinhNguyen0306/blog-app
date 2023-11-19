@@ -4,19 +4,18 @@ namespace App\Models;
 
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
-use Illuminate\Database\Eloquent\Relations\BelongsTo;
 
-class Comment extends Model
+class Share extends Model
 {
     use HasFactory;
 
+    protected $table = 'shares';
+
     protected $fillable = [
-        'user_id',
-        'post_id',
-        'content',
+        'shareContent',
     ];
 
-    public function post(): BelongsTo
+    public function post()
     {
         return $this->belongsTo(Post::class);
     }

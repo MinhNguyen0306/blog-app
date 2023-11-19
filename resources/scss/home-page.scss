@@ -4,8 +4,6 @@
     @include flex(start, start);
 
     flex-direction: column;
-    border-right: 1px solid gray;
-    border-left: 1px solid gray;
     height: 1500px;
 }
 
@@ -66,35 +64,47 @@
             background-color: transparent;
             color: white;
             border: none;
+            border-bottom: 1px solid gray;
         }
 
         .attachAction {
             width: 100%;
-            padding: 1rem 0.5rem;
-            border-top: 1px solid gray;
+            padding: 1rem 0.5rem 0 0.5rem;
 
-            @include flex(start, center);
+            @include flex(space-between, center);
 
-            .iconAction {
-                width: 35px;
-                height: 35px;
-                border-radius: 50%;
-                margin-right: 1rem;
-                display: grid;
-                align-items: center;
-                justify-items: center;
-                cursor: pointer;
-                color: rgb(0, 26, 255);
-                transition: background-color .3s ease-in-out;
+            .action {
+                @include flex(start, center);
 
-                .icon {
-                    max-width: 20px;
-                    stroke-width: 0.15rem;
+                .iconAction {
+                    width: 35px;
+                    height: 35px;
+                    border-radius: 50%;
+                    margin-right: 1rem;
+                    display: grid;
+                    align-items: center;
+                    justify-items: center;
+                    cursor: pointer;
+                    color: rgb(0, 26, 255);
+                    transition: background-color .3s ease-in-out;
+
+                    .icon {
+                        max-width: 20px;
+                        stroke-width: 0.15rem;
+                    }
+
+                    #image-upload {
+                        display: none;
+                    }
+
+                    label {
+                        cursor: pointer;
+                    }
                 }
-            }
 
-            .iconAction:hover {
-                background-color: rgba(0, 26, 255, 0.2);
+                .iconAction:hover {
+                    background-color: rgba(0, 26, 255, 0.2);
+                }
             }
 
             .submit {
@@ -104,4 +114,12 @@
             }
         }
     }
+}
+
+.errorMessage {
+    padding: .5rem 1rem;
+    border-radius: $border-radius;
+    background-color: crimson;
+    color: white;
+    max-width: fit-content;
 }

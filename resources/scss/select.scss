@@ -1,0 +1,18 @@
+@use './config/index' as *;
+
+.selectContainer {
+    height: 35px;
+    border: 2px solid white;
+    appearance: none;
+    border-radius: $border-radius;
+    padding: 0 1.5rem;
+    outline: none;
+    cursor: pointer;
+    background-color: $body-bg;
+    color: white;
+
+    .selectItem {
+        cursor: pointer;
+    }
+}
+

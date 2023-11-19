@@ -2,19 +2,20 @@
 
 namespace App\View\Components\common;
 
-use App\Models\Post as ModelsPost;
+use App\Models\Comment as ModelsComment;
 use Closure;
 use Illuminate\Contracts\View\View;
 use Illuminate\View\Component;
 
-class Post extends Component
+class Comment extends Component
 {
     /**
      * Create a new component instance.
      */
     public function __construct(
-        public ModelsPost $post
+        public ModelsComment $comment
     ) {
+        //
     }
 
     /**
@@ -22,6 +23,6 @@ class Post extends Component
      */
     public function render(): View|Closure|string
     {
-        return view('components.common.post');
+        return view('components.common.comment');
     }
 }

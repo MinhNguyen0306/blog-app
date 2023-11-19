@@ -22,21 +22,23 @@
             <span>Tin nhan</span>
         </li>
         <li class="action">
-            <x-heroicon-o-home class="icon" />
-            <span>Ho so</span>
+            <x-monoicon-favorite class="icon" />
+            <span>Yeu thich</span>
         </li>
         <li class="action">
-            <x-heroicon-o-home class="icon" />
-            <span>Yeu thich</span>
+            <x-ri-logout-circle-r-line class="icon" />
+            <a href="{{ route('logout') }}">Dang xuat</a>
         </li>
     </ul>
 
-    <div class="profile">
+    <div class="profile" onclick="window.location='{{ route('users.get_profile_view', Auth::user()->id) }}'">
+        <span class="seeAccount">Xem profile</span>
         <div class="profileContent">
-            <img src={{ asset('images/Logo.svg') }} alt="" />
+            <img src={{ Auth::user()->avatar ? asset('images/' . Auth::user()->avatar) : asset('images/user.png') }}
+                alt="" />
             <div class="profileInfo">
-                <h3>Minh nguyen</h3>
-                <span>@Khanguyen03062001</span>
+                <h3>{{ Auth::user()->name }}</h3>
+                <span>{{ Auth::user()->email }}</span>
             </div>
         </div>
         <x-majestic-more-menu-line class="icon" />
