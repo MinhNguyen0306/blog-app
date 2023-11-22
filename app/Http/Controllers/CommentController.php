@@ -2,12 +2,22 @@
 
 namespace App\Http\Controllers;
 
+use App\Events\NewComment;
 use App\Models\Comment;
 use App\Models\Post;
+use App\Models\User;
+use App\Services\FCMService;
 use Illuminate\Http\Request;
 
 class CommentController extends Controller
 {
+    protected $fcmService;
+
+    public function __construct(FCMService $fcmService)
+    {
+        $this->$fcmService = $fcmService;
+    }
+
     public function getCommentOfPost(Post $post)
     {
         $comments = $post->comments;
@@ -29,8 +39,13 @@ class CommentController extends Controller
 
         $createdComment = Comment::create($request->all());
 
-        if ($createdComment) toastr()->success("Da binh luan");
-        else toastr()->error("Binh luan that bai");
+        if ($createdComment) {
+            toastr()->success("Da binh luan");
+            broadcast(new NewComment($createdComment))->toOthers();
+            $this->fcmService->sendNotification($createdComment);
+        } else {
+            toastr()->error("Binh luan that bai");
+        }
 
         return redirect()->back();
     }

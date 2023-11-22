@@ -12,6 +12,9 @@ class Share extends Model
     protected $table = 'shares';
 
     protected $fillable = [
+        'post_id',
+        'user_id',
+        'isPublished',
         'shareContent',
     ];
 

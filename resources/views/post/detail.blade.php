@@ -1,8 +1,112 @@
 <head>
-    @vite(['resources/scss/post-detail-page.scss'])
+    @vite(['resources/scss/post-detail-page.scss', 'resources/js/app.js', 'resources/scss/comment-box.scss'])
 </head>
 
+<script type="module">
+    const url = window.location.href
+    const postId = url.split('/')[4];
+    const postComment = document.querySelector('.postComment');
+    const voidClass = document.querySelector('.void');
+
+    window.Echo.channel('post.' + postId)
+        .listen('NewComment', (comment) => {
+            console.log(comment);
+            const userAvatar = comment.user.avatar;
+            const userName = comment.user.name;
+            const userEmail = comment.user.email;
+            const userId = comment.user.id;
+            const commentContainer = `<div class="commentContainer">
+                                <img src=${userAvatar ? `http://127.0.0.1:8000/images/${userAvatar}` : "http://127.0.0.1:8000/images/user.png"}
+                                    alt="User comment Image" onclick="window.location='http://127.0.0.1:8000/account/profile/${userId}'" />
+
+                                <div class="commentInfo">
+                                    <div class="commentHeader">
+                                        <h3 onclick="window.location='http://127.0.0.1:8000/account/profile/${userId}'">
+                                            ${userName}
+                                        </h3>
+                                        <span>${userEmail}</span>
+                                    </div>
+                                    <div class="commentContent">
+                                        <p class="content">
+                                            ${comment.content}
+                                        </p>
+
+                                        ${comment.image && `<img src='http://127.0.0.1:8000/images/${comment.image} alt="" />`}
+                                    </div>
+
+                                    <div class="commentAction">
+                                        <span>${comment.created_at}</span>
+                                        <i></i>
+                                        <div class="action" id="likeAction">
+                                            <x-bx-like class="icon" />
+                                            <span>17</span>
+                                        </div>
+                                        <div class="action" id="commentAction">
+                                            <x-far-comment class="icon" />
+                                            <span>17</span>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>`
+            if (voidClass) {
+                voidClass.remove();
+            }
+            postComment.innerHTML = postComment.innerHTML + commentContainer;
+        });
+
+    // FCM Notification
+    const firebaseConfig = {
+        apiKey: "AIzaSyAdM4qSbQC1ebmOJ77jTADPnNjN_2Y6kbw",
+        authDomain: "blog-app-laravel.firebaseapp.com",
+        projectId: "blog-app-laravel",
+        storageBucket: "blog-app-laravel.appspot.com",
+        messagingSenderId: "560468941993",
+        appId: "1:560468941993:web:52733e57a2cbfe143a5db8",
+        measurementId: "G-E4HEP83JYX"
+    };
+
+    // Initialize Firebase
+    const app = initializeApp(firebaseConfig);
+    const messaging = getMessaging(app);
+    const startFCM = () => {
+        messaging.requestPermission()
+            .then(() => {
+                return messaging.getToken();
+            })
+            .then((token) => {
+                const resp = fetch('{{ route('store.token') }}', {
+                    method: "POST",
+                    headers: {
+                        'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
+                    },
+                    body: JSON.stringify({
+                        token: token
+                    })
+                })
+
+                resp.then((response) => response.json())
+            })
+            .then((response) => {
+                if (response.success) alert('Token stored');
+                else alert('Token not stored');
+            })
+            .catch(function(error) {
+                alert(error)
+            })
+    }
+
+    messaging.onMessage(function(payload) {
+        const title = payload.notification.title;
+        const options = {
+            body: payload.notification.body,
+            icon: payload.notification.icon,
+        };
+        new Notification(title, options);
+    });
+</script>
+
 <x-layouts.main-layout>
+
     <div class="postContainer">
         <div class="postHeader">
             <div class="back">
@@ -12,7 +116,6 @@
                 <h2>Bai dang</h2>
             </div>
         </div>
-
 
         <div class="postContent">
             <div class="headerContent">

@@ -25,6 +25,7 @@
         "laravel/tinker": "^2.8",
         "mallardduck/blade-boxicons": "^2.4",
         "owenvoke/blade-fontawesome": "^2.4",
+        "pusher/pusher-php-server": "^7.2",
         "yoeunes/toastr": "^2.3"
     },
     "require-dev": {

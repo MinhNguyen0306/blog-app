@@ -49,7 +49,7 @@
         row-gap: 1;
 
         .infoTop {
-            @include flex(start, center);
+            @include flex(space-between, center);
             width: 100%;
             margin-bottom: 1rem;
 
@@ -90,6 +90,10 @@
                 .followNumber {
                     font-weight: 500;
                 }
+
+                .registerDate {
+                    @include flex(start, center);
+                }
             }
 
             .interaction div:hover {
@@ -99,7 +103,7 @@
         }
 
         .info > *:not(:last-child) {
-            margin-bottom: 1rem;
+            margin-bottom: 1.5rem;
         }
     }
 

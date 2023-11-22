@@ -6,9 +6,12 @@ use App\Http\Requests\PostRequest;
 use App\Models\Category;
 use App\Models\Post;
 use App\Models\Share;
+use App\Models\User;
+use Illuminate\Contracts\Database\Eloquent\Builder;
 use Illuminate\Database\Eloquent\ModelNotFoundException;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
+use SebastianBergmann\Type\FalseType;
 use Throwable;
 
 class PostController extends Controller
@@ -90,36 +93,29 @@ class PostController extends Controller
         return redirect()->back();
     }
 
-    public function update(PostRequest $postRequest, $postId)
+    public function update(PostRequest $request, $postId)
     {
-        $postRequest->validated();
+        $request->validated();
 
         try {
             $post = Post::findOrFail($postId);
 
-            if (!$post) {
-                return redirect()->back()->with([
-                    "fail" => "Post not found with " . $postId
-                ]);
-            }
+            $post->title = $request->title;
+            $post->content = $request->content;
+            $post->category_id = $request->category_id;
+            $post->user_id = $request->user_id;
 
-            $post->title = $postRequest->title;
-            $post->cotnent = $postRequest->content;
-            $postSaved = Post::saved($post);
+            $postSaved = $post->save();
 
             if ($postSaved) {
-                return redirect()->back()->with([
-                    "success" => "Update post success"
-                ]);
+                toastr()->success("Cap nhat thanh cong");
+            } else {
+                toastr()->error("Cap nhat that bai");
             }
-
-            return redirect()->back()->with([
-                "fail" => "Update post failed"
-            ]);
-        } catch (ModelNotFoundException $exception) {
-            return redirect()->back()->with([
-                "fail" => $exception->getMessage()
-            ]);
+        } catch (ModelNotFoundException $ex) {
+            toastr()->error($ex->getMessage());
+        } finally {
+            return redirect()->back();
         }
     }
 
@@ -160,5 +156,43 @@ class PostController extends Controller
         return view('post.edit', [
             'success' => "Update post success"
         ]);
+    }
+
+    public function share($userId, $postId)
+    {
+        try {
+            $user = User::findOrFail($userId);
+
+            $share = $user->shares()
+                ->where('post_id', $postId)
+                ->first();
+            if ($share) {
+                if ($share->isPublished === false) {
+                    $share->isPublished = true;
+                    $updatedShare = $share->save();
+                    if ($updatedShare) toastr()->success("Publish share");
+                    else toastr()->error('Error publish share');
+                    return redirect()->back();
+                }
+
+                toastr()->error('Ban da chia se post nay roi!');
+                return redirect()->back();
+            } else {
+                $freshShare = new Share();
+                $freshShare->post_id = $postId;
+                $freshShare->user_id = $userId;
+                $freshShare->isPublished = true;
+                $createdShare = $freshShare->save();
+                if ($createdShare) {
+                    toastr()->success("Share post thanh cong");
+                } else {
+                    toastr()->error("Share post that bai");
+                }
+            }
+        } catch (ModelNotFoundException $ex) {
+            toastr()->error("Resource not found exception with " . $userId);
+        } finally {
+            return redirect()->back();
+        }
     }
 }

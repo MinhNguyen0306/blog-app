@@ -2,6 +2,7 @@
 
 use App\Http\Controllers\AuthController;
 use App\Http\Controllers\CommentController;
+use App\Http\Controllers\NotificationController;
 use Illuminate\Support\Facades\Route;
 
 use App\Http\Controllers\PostController;
@@ -53,7 +54,7 @@ Route::middleware('userLogin')->group(function () {
         Route::post('/', [PostController::class, 'store'])->name('store');
         Route::put('/{id}', [PostController::class], 'update')->name('update');
         Route::delete('/{id}', [PostController::class], 'delete')->name('delete');
-        Route::post('/share', [PostController::class, 'sharePost'])->name('share');
+        Route::post('/share', [PostController::class, 'share'])->name('share');
     });
 
     // User routes
@@ -64,10 +65,17 @@ Route::middleware('userLogin')->group(function () {
 
         // Action routes
         Route::post('/account/profile/update/{userId}', [UserController::class, 'update'])->name('update');
+        Route::post('/{fromUserId}/follwing/{toUserId}', [UserController::class, 'follwing'])->name('following');
+        Route::post('/{fromUserId}/follwing/{toUserId}/cancel', [UserController::class, 'cancelSendingFollowing'])->name('cancel_following');
     });
 
     Route::prefix('comments')->name('comments.')->group(function () {
         // Action routes
         Route::post('/create/user/{userId}/post/{postId}', [CommentController::class, 'create'])->name('create');
     });
+});
+
+// Middleware cho notification fcm
+Route::group(['middleware' => 'auth'], function () {
+    Route::post('/store-token', [NotificationController::class, 'updateDeviceToken'])->name('store.token');
 });

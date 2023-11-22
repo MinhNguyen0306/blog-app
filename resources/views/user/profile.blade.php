@@ -18,11 +18,36 @@
             <div class="infoTop">
                 <img src={{ $user->avatar ? asset($user->avatar) : asset('images/user.png') }} alt=""
                     class="avatar">
-                <div>
-                    <x-common.button type='button' onclick="window.location='{{ route('users.get_edit_form') }}'">
-                        Chỉnh sửa profile
-                    </x-common.button>
-                </div>
+                @if ($user->id === Auth::user()->id)
+                    <div>
+                        <x-common.button type='button' onclick="window.location='{{ route('users.get_edit_form') }}'">
+                            Chỉnh sửa profile
+                        </x-common.button>
+                    </div>
+                @else
+                    @if ($user->followers->contains(['from_user_id' => Auth::user()->id, 'sending_status' => 'pending']))
+                        <div>
+                            <x-common.button type='button'
+                                onclick="window.location='{{ route('users.cancel_following', ['fromUserId' => Auth::user()->id, 'toUserId' => $user->id]) }}'">
+                                Hủy yêu cầu
+                            </x-common.button>
+                        </div>
+                    @elseif($user->followers->contains(['from_user_id' => Auth::user()->id, 'sending_status' => 'accepted']))
+                        <div>
+                            <x-common.button type='button'
+                                onclick="window.location='{{ route('users.cancel_following', ['fromUserId' => Auth::user()->id, 'toUserId' => $user->id]) }}'">
+                                Đang theo dõi
+                            </x-common.button>
+                        </div>
+                    @else
+                        <div>
+                            <x-common.button type='button'
+                                onclick="window.location='{{ route('users.following', ['fromUserId' => Auth::user()->id, 'toUserId' => $user->id]) }}'">
+                                Theo dõi
+                            </x-common.button>
+                        </div>
+                    @endif
+                @endif
             </div>
 
             <div class="info">
@@ -32,11 +57,12 @@
                 <span class="infoEmail">
                     {{ $user->email }}
                 </span>
-                <span class="registerDate">
-                    <x-akar-schedule class="icon" /> Tham gia thang
-                    {{ explode('-', $user->created_at->toDateString())[1] }} nam
-                    {{ explode('-', $user->created_at->toDateString())[0] }}
-                </span>
+                <div class="registerDate">
+                    <x-akar-schedule class="icon" />
+                    <span> Tham gia thang {{ explode('-', $user->created_at->toDateString())[1] }} nam
+                        {{ explode('-', $user->created_at->toDateString())[0] }}
+                    </span>
+                </div>
                 <div class="interaction">
                     <div>
                         <span class="followNumber">{{ $user->follwings->count() }}</span>
