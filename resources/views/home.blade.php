@@ -2,7 +2,7 @@
     @vite(['resources/scss/home-page.scss', 'resources/scss/select.scss'])
 </head>
 
-<x-layouts.main-layout>
+<x-layouts.main-layout :users="$users">
     <div class="homeContainer">
         <div class="homeHeader">
             <div class="tabItem">
@@ -31,7 +31,7 @@
 
             <input type="text" name="user_id" id="user_id" value={{ Auth::user()->id }} hidden readonly />
 
-            <img src={{ Auth::user()->avatar ? asset('images/' . Auth::user()->avatar) : asset('images/Logo.svg') }}
+            <img src={{ Auth::user()->avatar ? asset('images/' . Auth::user()->avatar) : asset('images/user.png') }}
                 alt="User Image" />
 
             <div class="postFormContent">
@@ -53,12 +53,12 @@
                     <div class="action">
                         <div class="iconAction">
                             <label for="image-upload">
-                                <x-bi-image-fill class="icon" />
+                                <i class="fa-solid fa-image icon"></i>
                             </label>
                             <input type="file" id="image-upload" name="image-upload" accept="image/*">
                         </div>
                         <div class="iconAction">
-                            <x-akar-schedule class="icon" />
+                            <i class="fa-regular fa-calendar-days icon"></i>
                         </div>
 
                         <select name="category_id" id="category_id" class="selectContainer">
@@ -87,6 +87,9 @@
         <div class="homeContent">
             @foreach ($posts as $post)
                 <x-common.post :post="$post" />
+            @endforeach
+            @foreach ($shares as $share)
+                <x-common.share :share="$share" />
             @endforeach
         </div>
     </div>

@@ -4,6 +4,7 @@ namespace App\View\Components\layouts;
 
 use Closure;
 use Illuminate\Contracts\View\View;
+use Illuminate\Database\Eloquent\Collection;
 use Illuminate\View\Component;
 
 class MainLayout extends Component
@@ -11,8 +12,9 @@ class MainLayout extends Component
     /**
      * Create a new component instance.
      */
-    public function __construct()
-    {
+    public function __construct(
+        public Collection $users
+    ) {
         //
     }
 

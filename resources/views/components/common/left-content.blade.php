@@ -5,29 +5,29 @@
 <div class="leftContainer">
     <x-common.logo />
     <ul class="listAction">
-        <li class="action">
-            <x-heroicon-o-home class="icon" />
-            <span class=" {{ Route::current('home') ? 'active' : '' }}">Trang chu</span>
+        <li class="action" onclick="window.location='{{ route('home') }}'">
+            <i class="fa-solid fa-house icon"></i>
+            <span class=" {{ Route::current('home') ? 'active' : '' }}">Trang chủ</span>
         </li>
         <li class="action">
-            <x-zondicon-search class="icon" />
-            <span>Tim kiem</span>
+            <i class="fa-solid fa-magnifying-glass icon"></i>
+            <span>Tìm kiếm</span>
         </li>
         <li class="action" onclick="window.location='{{ route('notifications.get_notification_page') }}'">
-            <x-ri-notification-line class="icon" />
-            <span>Thong bao</span>
+            <i class="fa-solid fa-bell icon"></i>
+            <span>Thông báo</span>
         </li>
         <li class="action">
-            <x-fontisto-email class="icon" />
-            <span>Tin nhan</span>
+            <i class="fa-solid fa-envelope icon"></i>
+            <span>Tin nhắn</span>
         </li>
         <li class="action">
-            <x-monoicon-favorite class="icon" />
-            <span>Yeu thich</span>
+            <i class="fa-solid fa-bookmark icon"></i>
+            <span>Yêu thích</span>
         </li>
         <li class="action">
-            <x-ri-logout-circle-r-line class="icon" />
-            <a href="{{ route('logout') }}">Dang xuat</a>
+            <i class="fa-solid fa-right-from-bracket icon"></i>
+            <a href="{{ route('logout') }}">Đăng xuất</a>
         </li>
     </ul>
 
@@ -41,6 +41,6 @@
                 <span>{{ Auth::user()->email }}</span>
             </div>
         </div>
-        <x-majestic-more-menu-line class="icon" />
+        <i class="fa-solid fa-ellipsis icon"></i>
     </div>
 </div>

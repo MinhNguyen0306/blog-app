@@ -9,6 +9,7 @@ use App\Services\FCMService;
 use Exception;
 use Illuminate\Database\Eloquent\ModelNotFoundException;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Auth;
 
 class UserController extends Controller
 {
@@ -34,8 +35,8 @@ class UserController extends Controller
     {
         try {
             $user = User::findOrFail($userId);
-            $requestFollowings = Follower::whereBelongsTo($user, 'toUser')
-                ->where('sending_status', 'pending')
+            $requestFollowings = Follower::where('from_user_id', '!=', Auth::user()->id)
+                ->where('sending_status', '=', 'pending')
                 ->orderBy('created_at', 'DESC')
                 ->get();
 

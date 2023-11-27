@@ -32,13 +32,15 @@ class PostController extends Controller
             return $share;
         });
 
+        $users = User::where('id', '!=', Auth::user()->id)->get();
 
         $categories = Category::all();
 
         return view('home', [
+            'users' => $users,
             'posts' => $posts,
             'shares' => $shares,
-            'categories' => $categories
+            'categories' => $categories,
         ]);
     }
 

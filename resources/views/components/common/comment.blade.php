@@ -24,14 +24,20 @@
         </div>
 
         <div class="commentAction">
-            <span>{{ $comment->created_at }}</span>
-            <i></i>
+            <span>{{ floor((strtotime(date('Y-m-d H:i:s')) - strtotime($comment->updated_at)) / 60 / 60 / 24) < 1
+                ? (floor((strtotime(date('Y-m-d H:i:s')) - strtotime($comment->updated_at)) / 60 / 60) < 1
+                    ? (floor((strtotime(date('Y-m-d H:i:s')) - strtotime($comment->updated_at)) / 60) < 1
+                        ? strtotime(date('Y-m-d H:i:s')) - strtotime($comment->updated_at) . ' giây trước'
+                        : floor((strtotime(date('Y-m-d H:i:s')) - strtotime($comment->updated_at)) / 60) . ' phút trước')
+                    : floor((strtotime(date('Y-m-d H:i:s')) - strtotime($comment->updated_at)) / 60 / 60) . ' giờ trước')
+                : floor((strtotime(date('Y-m-d H:i:s')) - strtotime($comment->updated_at)) / 60 / 60 / 24) . ' ngày trước' }}</span>
+            <div class="tick"></div>
             <div class="action" id="likeAction">
-                <x-bx-like class="icon" />
+                <i class="fa-regular fa-heart icon"></i>
                 <span>17</span>
             </div>
             <div class="action" id="commentAction">
-                <x-far-comment class="icon" />
+                <i class="fa-regular fa-comment icon"></i>
                 <span>17</span>
             </div>
         </div>

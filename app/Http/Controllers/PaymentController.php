@@ -2,23 +2,50 @@
 
 namespace App\Http\Controllers;
 
+use App\Models\Payment;
 use Exception;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Auth;
 
 class PaymentController extends Controller
 {
+    public function getPaymentPackageView()
+    {
+        return view('payment.payment-choose');
+    }
+
+    public function getPaymentResponseView()
+    {
+        return view('payment.payment-response');
+    }
+
     public function vnpayPayment(Request $request)
     {
+        // $amount = 0;
+        // $payment = null;
+        // if ($request->payment_package === 'silver') {
+        //     $amount = 70000;
+        //     $payment = Payment::create([
+        //         'user_id' => Auth::user()->id,
+        //         'payment_package' => 'silver',
+        //     ]);
+        // } else {
+        //     $amount = 100000;
+        //     $payment = Payment::create([
+        //         'user_id' => Auth::user()->id,
+        //         'payment_package' => 'gold',
+        //     ]);
+        // }
 
         $vnp_Url = "https://sandbox.vnpayment.vn/paymentv2/vpcpay.html";
-        $vnp_Returnurl = "http://127.0.0.1:8000/";
+        $vnp_Returnurl = "http://127.0.0.1:8000/payment/response";
         $vnp_TmnCode = "3BG22H4X"; //Mã website tại VNPAY
         $vnp_HashSecret = "RYELBFVYCXNLRTXDTYQMWCMJUIPMEEML"; //Chuỗi bí mật
 
-        $vnp_TxnRef = "03062001"; //Mã đơn hàng. Trong thực tế Merchant cần insert đơn hàng vào DB và gửi mã này sang VNPAY
+        $vnp_TxnRef = '0303030'; //Mã đơn hàng. Trong thực tế Merchant cần insert đơn hàng vào DB và gửi mã này sang VNPAY
         $vnp_OrderInfo = 'Thanh toan hoa don thanh vien';
         $vnp_OrderType = 'Member';
-        $vnp_Amount = 10000 * 100;
+        $vnp_Amount = 1000000;
         $vnp_Locale = 'VN';
         $vnp_BankCode = 'NCB';
         $vnp_IpAddr = $_SERVER['REMOTE_ADDR'];

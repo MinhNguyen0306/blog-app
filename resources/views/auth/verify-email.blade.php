@@ -5,7 +5,13 @@
 <body>
     <div class="authContainer">
         <div class="authForm">
-            <p>Check your email to verify email</p>
+            <p style="text-align: center">Kiểm tra email của bạn</p>
         </div>
+        <form action="{{ route('verification.send') }}" method="POST" id="resentLink">
+            @csrf
+            <x-common.button type="submit">
+                Gửi lại link
+            </x-common.button>
+        </form>
     </div>
 </body>

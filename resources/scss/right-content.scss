@@ -97,6 +97,13 @@
                         max-width: 30px;
                         border-radius: 50%;
                         margin-right: 10px;
+                        border: 1px solid gray;
+                        cursor: pointer;
+
+                        &:hover {
+                            filter: brightness(0.75);
+                            transition: .3s filter;
+                        }
                     }
 
                     .userName {
@@ -107,6 +114,10 @@
                             overflow: hidden;
                             white-space: nowrap;
                             text-overflow: ellipsis;
+                        }
+
+                        .userEmail {
+                            max-width: 120px;
                         }
                     }
                 }

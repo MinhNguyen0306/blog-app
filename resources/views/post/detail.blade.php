@@ -30,19 +30,17 @@
                                         <p class="content">
                                             ${comment.content}
                                         </p>
-
-                                        ${comment.image && `<img src='http://127.0.0.1:8000/images/${comment.image} alt="" />`}
                                     </div>
 
                                     <div class="commentAction">
                                         <span>${comment.created_at}</span>
                                         <i></i>
                                         <div class="action" id="likeAction">
-                                            <x-bx-like class="icon" />
+                                            <i class="fa-solid fa-arrow-left icon"></i>
                                             <span>17</span>
                                         </div>
                                         <div class="action" id="commentAction">
-                                            <x-far-comment class="icon" />
+                                            <i class="fa-regular fa-comment icon"></i>
                                             <span>17</span>
                                         </div>
                                     </div>
@@ -59,11 +57,11 @@
 
     <div class="postContainer">
         <div class="postHeader">
-            <div class="back">
-                <x-bx-arrow-back class="icon" />
+            <div class="back" onclick="window.location='{{ url()->previous() }}'">
+                <i class="fa-solid fa-arrow-left" class="icon"></i>
             </div>
             <div class="headerInfo">
-                <h2>Bai dang</h2>
+                <h2>Bài đăng</h2>
             </div>
         </div>
 
@@ -77,7 +75,13 @@
                         <h3>
                             {{ $post->user->name }}
                         </h3>
-                        <span>{{ $post->created_at }}</span>
+                        <span>{{ floor((strtotime(date('Y-m-d H:i:s')) - strtotime($post->updated_at)) / 60 / 60 / 24) < 1
+                            ? (floor((strtotime(date('Y-m-d H:i:s')) - strtotime($post->updated_at)) / 60 / 60) < 1
+                                ? (floor((strtotime(date('Y-m-d H:i:s')) - strtotime($post->updated_at)) / 60) < 1
+                                    ? strtotime(date('Y-m-d H:i:s')) - strtotime($post->updated_at) . ' giây trước'
+                                    : floor((strtotime(date('Y-m-d H:i:s')) - strtotime($post->updated_at)) / 60) . ' phút trước')
+                                : floor((strtotime(date('Y-m-d H:i:s')) - strtotime($post->updated_at)) / 60 / 60) . ' giờ trước')
+                            : floor((strtotime(date('Y-m-d H:i:s')) - strtotime($post->updated_at)) / 60 / 60 / 24) . ' ngày trước' }}</span>
                     </div>
                 </div>
                 @if ($post->user->id === Auth::user()->id)
@@ -90,7 +94,7 @@
                 @else
                     @if ($post->user->followers->where('from_user_id', '=', Auth::user()->id)->where('sending_status', '=', 'pending')->first())
                         <form
-                            action="{{ route('users.cancel_following', ['fromUserId' => Auth::user()->id, 'toUserId' => $post->user->id]) }}"
+                            action="{{ route('users.cancel_sending_following', ['fromUserId' => Auth::user()->id, 'toUserId' => $post->user->id]) }}"
                             method="POST">
                             @csrf
                             <x-common.button type='submit'>
@@ -99,7 +103,7 @@
                         </form>
                     @elseif($post->user->followers->where('from_user_id', '=', Auth::user()->id)->where('sending_status', '=', 'accepted')->first())
                         <form
-                            action="{{ route('users.cancel_following', ['fromUserId' => Auth::user()->id, 'toUserId' => $post->user->id]) }}"
+                            action="{{ route('users.following', ['fromUserId' => Auth::user()->id, 'toUserId' => $post->user->id]) }}"
                             method="POST">
                             @csrf
                             <x-common.button type='submit'>
@@ -130,19 +134,19 @@
 
             <div class="postAction">
                 <div class="action" id="likeAction">
-                    <x-bx-like class="icon" />
-                    <span>17</span>
+                    <i class="fa-regular fa-heart icon"></i>
+                    <span>{{ $post->likes->count() }}</span>
                 </div>
                 <div class="action" id="commentAction">
-                    <x-far-comment class="icon" />
-                    <span>17</span>
+                    <i class="fa-regular fa-comment icon"></i>
+                    <span>{{ $post->comments->count() }}</span>
                 </div>
                 <div class="action" id="shareAction">
-                    <x-heroicon-o-share class="icon" />
-                    <span>17</span>
+                    <i class="fa-regular fa-share-from-square icon"></i>
+                    <span>{{ $post->shares->count() }}</span>
                 </div>
                 <div class="action" id="favoriteAction">
-                    <x-monoicon-favorite class="icon" />
+                    <i class="fa-regular fa-bookmark icon"></i>
                 </div>
             </div>
         </div>
@@ -168,13 +172,13 @@
             alt="User Post Image" onclick="window.location='{{ route('users.get_profile_view', $post->user->id) }}'" />
 
         <div class="commentPost">
-            <input type="text" id="content" name="content" class="content" placeholder="Viet binh luan..."
+            <input type="text" id="content" name="content" class="content" placeholder="Viết bình luận..."
                 autocomplete="off" />
             <div class="commentAction">
                 <div class="action">
                     <div class="iconAction">
                         <label for="image-upload">
-                            <x-bi-image-fill class="icon" />
+                            <i class="fa-regular fa-image icon"></i>
                         </label>
                         <input type="file" id="image-upload" name="image-upload" accept="image/*">
                     </div>
@@ -182,7 +186,7 @@
 
                 <div class="submit">
                     <x-common.button type="submit">
-                        Tra loi
+                        Trả lời
                     </x-common.button>
                 </div>
             </div>

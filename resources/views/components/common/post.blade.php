@@ -10,7 +10,6 @@
 
         function sharePost(event) {
             event.stopPropagation();
-            return confirm('Share bài post này?')
         }
 
         function likePost(event) {
@@ -61,12 +60,14 @@
                 action="{{ route('posts.like_post', ['userId' => Auth::user()->id, 'postId' => $post->id]) }}"
                 method="POST">
                 @csrf
-                <label for="likeNumber"><x-bx-like class="icon" /></label>
+                <label for="likeNumber">
+                    <i class="fa-regular fa-heart icon"></i>
+                </label>
                 <button type="submit" id="likeNumber"
                     class="btnAction">{{ $post->likes->where('has_like', true)->count() }}</button>
             </form>
             <div class="action" id="commentAction">
-                <x-far-comment class="icon" />
+                <i class="fa-regular fa-comment icon"></i>
                 <span>{{ $post->comments->count() }}</span>
             </div>
 
@@ -74,11 +75,13 @@
                 action="{{ route('posts.share', ['postId' => $post->id, 'userId' => $post->user->id]) }}"
                 method="POST" onclick="sharePost(event)">
                 @csrf
-                <label for="btnShare"><x-heroicon-o-share class="icon" /></label>
+                <label for="btnShare">
+                    <i class="fa-regular fa-share-from-square icon"></i>
+                </label>
                 <button type="submit" id="btnShare" class="btnAction">{{ $post->shares->count() }}</button>
             </form>
             <div class="action" id="favoriteAction">
-                <x-monoicon-favorite class="icon" />
+                <i class="fa-regular fa-bookmark icon"></i>
             </div>
         </div>
     </div>

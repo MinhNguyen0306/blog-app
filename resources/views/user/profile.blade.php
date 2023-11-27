@@ -5,8 +5,8 @@
 <x-layouts.main-layout>
     <div class="profileContainer">
         <div class="profileHeader">
-            <div class="back" onclick="window.location='{{ route('home') }}'">
-                <x-bx-arrow-back class="icon" />
+            <div class="back" onclick="window.location='{{ url()->previous() }}'">
+                <i class="fa-solid fa-arrow-left icon"></i>
             </div>
             <div class="headerInfo">
                 <h2>{{ $user->name }}</h2>
@@ -64,8 +64,8 @@
                     {{ $user->email }}
                 </span>
                 <div class="registerDate">
-                    <x-akar-schedule class="icon" />
-                    <span> Tham gia thang {{ explode('-', $user->created_at->toDateString())[1] }} nam
+                    <i class="fa-regular fa-calendar-days icon"></i>
+                    <span> Tham gia tháng {{ explode('-', $user->created_at->toDateString())[1] }} năm
                         {{ explode('-', $user->created_at->toDateString())[0] }}
                     </span>
                 </div>
@@ -85,24 +85,26 @@
         </div>
 
         <div class="tabBar">
-            <div class="tabItem">
-                <a href="{{ route('users.get_profile_view', $user->id) }}" class="tabLink">
-                    <div class="tabBox {{ Route::current('users.profile') ? 'active' : '' }}">
+            <div class="tabItem current">
+                <a href="#" class="tabLink">
+                    <div class="tabBox active">
                         <span class="tabTitle">
                             Bài đăng
                         </span>
                     </div>
                 </a>
             </div>
-            <div class="tabItem">
-                <a href="{{ route('users.get_request_followers', $user->id) }}" class="tabLink">
-                    <div class="tabBox">
-                        <span class="tabTitle">
-                            Yêu cầu theo dõi
-                        </span>
-                    </div>
-                </a>
-            </div>
+            @if ($user->id === Auth::user()->id)
+                <div class="tabItem">
+                    <a href="{{ route('users.get_request_followers', $user->id) }}" class="tabLink">
+                        <div class="tabBox">
+                            <span class="tabTitle">
+                                Yêu cầu theo dõi
+                            </span>
+                        </div>
+                    </a>
+                </div>
+            @endif
             <div class="tabItem">
                 <a href="#" class="tabLink">
                     <div class="tabBox">

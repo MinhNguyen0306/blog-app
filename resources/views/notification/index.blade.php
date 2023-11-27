@@ -2,8 +2,8 @@
     <div class="notificationContainer">
         <div class="postHeader">
             <div class="titlePage">
-                <div class="back">
-                    <x-bx-arrow-back class="icon" />
+                <div class="back" onclick="window.location='{{ url()->previous() }}'">
+                    <i class="fa-solid fa-arrow-left" class="icon"></i>
                 </div>
                 <div class="headerInfo">
                     <h2>Thông báo</h2>

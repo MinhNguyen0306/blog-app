@@ -4,7 +4,6 @@
     @include flex(start, start);
 
     flex-direction: column;
-    height: 1500px;
 }
 
 .homeHeader {
@@ -60,7 +59,7 @@
         width: 35px;
         height: 35px;
         border-radius: 50%;
-        background-color: white;
+        border: 1px solid gray;
         align-self: self-start;
     }
 

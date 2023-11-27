@@ -1,0 +1,36 @@
+@use './config/index' as *;
+
+.paymentChooseContainer {
+    width: 100vw;
+    height: 100vh;
+    @include flex(center, center);
+
+    .package {
+        @include flex(unset, center);
+        column-gap: 5rem;
+
+        .item {
+            @include flex(unset, center);
+            flex-direction: column;
+            row-gap: 2rem;
+            border-radius: $border-radius;
+            border: 1px solid gray;
+            padding: 2rem 3rem;
+
+            .title {
+                font-weight: 700;
+                font-size: xx-large;
+            }
+
+            .features {
+                list-style-type: circle;
+
+                .feature {
+                    &:not(:last-child) {
+                        margin-bottom: .5rem;
+                    }
+                }
+            }
+        }
+    }
+}

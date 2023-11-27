@@ -10,6 +10,7 @@ use App\View\Components\common\MidContent;
 use App\View\Components\common\Post;
 use App\View\Components\common\RightContent;
 use App\View\Components\common\FollowRequest;
+use App\View\Components\common\Share;
 use App\View\Components\Forms\Input;
 use App\View\Components\Forms\Select;
 use App\View\Components\layouts\MainLayout;
@@ -46,5 +47,6 @@ class AppServiceProvider extends ServiceProvider
         Blade::component('post', Post::class);
         Blade::component('comment', Comment::class);
         Blade::component('follow-request', FollowRequest::class);
+        Blade::component('share', Share::class);
     }
 }

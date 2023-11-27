@@ -22,7 +22,6 @@ class FCMService
         $url = 'https://fcm.googleapis.com/fcm/send';
 
         $FcmToken = User::whereNotNull('device_token')->pluck('device_token')->where('id', $userId)->all();
-        dd($FcmToken);
 
         $serverKey = 'AAAAgn6NXKk:APA91bGGv3MFksQP-ZRAZnE0ViedKQVMyxUiutmXYwVxHIF28UlsGTDQ_T7w90MGzb-Tw9SFgEYXoAWZt8ycUjdCI24pBLVpYnppnCCkc1RfR5lvE_v0ex_eJ2q4KcLXTbWEZh_V4BGY';
 
@@ -60,7 +59,6 @@ class FCMService
         // Close connection
         curl_close($ch);
         // FCM response
-        dd($result);
     }
 
     public function sendFollwingNotification(Follower $follower, $typeNotification)

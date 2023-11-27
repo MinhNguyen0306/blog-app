@@ -6,7 +6,7 @@
     <div class="profileContainer">
         <div class="profileHeader">
             <div class="back" onclick="window.location='{{ route('home') }}'">
-                <x-bx-arrow-back class="icon" />
+                <i class="fa-solid fa-arrow-left icon"></i>
             </div>
             <div class="headerInfo">
                 <h2>{{ $user->name }}</h2>
@@ -27,7 +27,7 @@
                 @else
                     @if ($user->followers->where('from_user_id', '=', Auth::user()->id)->where('sending_status', '=', 'pending')->first())
                         <form
-                            action="{{ route('users.cancel_following', ['fromUserId' => Auth::user()->id, 'toUserId' => $user->id]) }}"
+                            action="{{ route('users.cancel_sending_following', ['fromUserId' => Auth::user()->id, 'toUserId' => $user->id]) }}"
                             method="POST">
                             @csrf
                             <x-common.button type='submit'>
@@ -36,7 +36,7 @@
                         </form>
                     @elseif($user->followers->where('from_user_id', '=', Auth::user()->id)->where('sending_status', '=', 'accepted')->first())
                         <form
-                            action="{{ route('users.cancel_following', ['fromUserId' => Auth::user()->id, 'toUserId' => $user->id]) }}"
+                            action="{{ route('users.cancel_sending_following', ['fromUserId' => Auth::user()->id, 'toUserId' => $user->id]) }}"
                             method="POST">
                             @csrf
                             <x-common.button type='submit'>
@@ -64,7 +64,7 @@
                     {{ $user->email }}
                 </span>
                 <div class="registerDate">
-                    <x-akar-schedule class="icon" />
+                    <i class="fa-regular fa-calendar-days icon"></i>
                     <span> Tham gia thang {{ explode('-', $user->created_at->toDateString())[1] }} nam
                         {{ explode('-', $user->created_at->toDateString())[0] }}
                     </span>

@@ -5,6 +5,7 @@ namespace App\Http\Controllers;
 use App\Http\Requests\auth\LoginRequest;
 use App\Http\Requests\auth\RegisterRequest;
 use App\Models\User;
+use Exception;
 use Illuminate\Auth\Events\PasswordReset;
 use Illuminate\Auth\Events\Registered;
 use Illuminate\Foundation\Auth\EmailVerificationRequest;
@@ -51,14 +52,13 @@ class AuthController extends Controller
     {
         if (Auth::attempt($request->validated())) {
             $request->session()->regenerate();
-
+            toastr()->success("Đăng nhập thành công");
             return redirect()->route('home');
         }
 
-        toastr()->error("Sai email hoac mat khau");
-
+        toastr()->error("Email hoặc mật khẩu không đúng");
         return redirect()->back()->with([
-            'fail' => "Sai email hoac mat khau"
+            'fail' => "Email hoặc mật khẩu không đúng"
         ]);
     }
 
@@ -70,9 +70,11 @@ class AuthController extends Controller
 
         if ($user) {
             event(new Registered($user));
+            toastr()->success("Đăng ký thành công");
             return redirect()->route('home');
         }
 
+        toastr()->error("Đăng ký thất bại");
         return redirect()->back()->with([
             'fail' => 'Tao user that bai'
         ]);
@@ -86,9 +88,13 @@ class AuthController extends Controller
             $request->only('email')
         );
 
-        return $status === Password::RESET_LINK_SENT
-            ? back()->with(['status' => __($status)])
-            : back()->withErrors(['email' => __($status)]);
+        if ($status === Password::RESET_LINK_SENT) {
+            toastr()->success("Đã gửi link");
+            return back()->with(['status' => __($status)]);
+        } else {
+            toastr()->error("Email không đúng");
+            return back()->withErrors(['email' => __($status)]);
+        }
     }
 
     public function resetPassword(Request $request)
@@ -134,26 +140,31 @@ class AuthController extends Controller
 
     public function loginWithGithub()
     {
-        $githubUser = Socialite::driver('github')->user();
+        try {
+            $githubUser = Socialite::driver('github')->user();
 
-        $userExisted = User::where('oauth_id', $githubUser->id)->first();
+            $userExisted = User::where('oauth_id', $githubUser->id)->first();
 
-        if ($userExisted) {
-            Auth::login($userExisted);
-        } else {
-            $user = User::create([
-                'oauth_id' => $githubUser->id,
-                'name' => $githubUser->name,
-                'email' => $githubUser->email,
-                'password' => Hash::make('password_hash'),
-                'oauth_token' => $githubUser->token,
-                'oauth_refresh_token' => $githubUser->refreshToken,
-            ]);
+            if ($userExisted) {
+                Auth::login($userExisted);
+            } else {
+                $user = User::create([
+                    'oauth_id' => $githubUser->id,
+                    'name' => $githubUser->name,
+                    'email' => $githubUser->email,
+                    'password' => Hash::make('password_hash'),
+                    'oauth_token' => $githubUser->token,
+                    'oauth_refresh_token' => $githubUser->refreshToken,
+                ]);
 
-            Auth::login($user);
+                Auth::login($user);
+            }
+
+            return redirect()->route('home');
+        } catch (Exception $e) {
+            toastr($e->getMessage());
+            return redirect()->back();
         }
-
-        return redirect()->route('home');
     }
 
     public function logout(Request $request)
