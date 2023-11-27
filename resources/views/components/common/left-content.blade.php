@@ -13,7 +13,7 @@
             <x-zondicon-search class="icon" />
             <span>Tim kiem</span>
         </li>
-        <li class="action">
+        <li class="action" onclick="window.location='{{ route('notifications.get_notification_page') }}'">
             <x-ri-notification-line class="icon" />
             <span>Thong bao</span>
         </li>

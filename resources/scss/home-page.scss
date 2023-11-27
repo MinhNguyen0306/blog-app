@@ -8,6 +8,7 @@
 }
 
 .homeHeader {
+    @include flex(unset, unset);
     position: sticky;
     top: 0;
     left: 0;
@@ -19,18 +20,31 @@
     color: gray;
     font-weight: 700;
 
-    @include flex(unset, unset);
-
-    .left,
-    .right {
-        flex: 1;
+    .tabItem {
+        flex-grow: 1;
+        color: blanchedalmond;
+        padding: 0 1rem;
+        font-weight: 700;
         text-align: center;
-        line-height: 50px;
         cursor: pointer;
-    }
+        background-color: inherit;
+        @include flex(center, center);
 
-    .left:hover, .right:hover {
-        background-color: rgb(41, 41, 41);
+        .tabBox {
+            padding: 1rem 0rem;
+            width: fit-content;
+
+        }
+
+        .active {
+            box-shadow: 0px -5px 0px 0px blue inset;
+            transition: .3s all;
+        }
+
+        &:not(.current):hover {
+            background-color: gray;
+            transition: .3s background-color;
+        }
     }
 }
 

@@ -3,6 +3,7 @@
 use App\Http\Controllers\AuthController;
 use App\Http\Controllers\CommentController;
 use App\Http\Controllers\NotificationController;
+use App\Http\Controllers\PaymentController;
 use Illuminate\Support\Facades\Route;
 
 use App\Http\Controllers\PostController;
@@ -54,7 +55,8 @@ Route::middleware('userLogin')->group(function () {
         Route::post('/', [PostController::class, 'store'])->name('store');
         Route::put('/{id}', [PostController::class], 'update')->name('update');
         Route::delete('/{id}', [PostController::class], 'delete')->name('delete');
-        Route::post('/share', [PostController::class, 'share'])->name('share');
+        Route::post('/{postId}/user/{userId}/share}', [PostController::class, 'share'])->name('share');
+        Route::post('/{postId}/user/{userId}/like', [PostController::class, 'likePost'])->name('like_post');
     });
 
     // User routes
@@ -62,20 +64,35 @@ Route::middleware('userLogin')->group(function () {
         // View routes
         Route::get('/account/profile/{userId}', [UserController::class, 'getProfileView'])->name('get_profile_view');
         Route::get('/account/profile/edit', [UserController::class, 'getEditView'])->name('get_edit_form');
+        Route::get('/account/profile/{userId}/requests', [UserController::class, 'getRequestFollowers'])->name('get_request_followers');
 
         // Action routes
         Route::post('/account/profile/update/{userId}', [UserController::class, 'update'])->name('update');
-        Route::post('/{fromUserId}/follwing/{toUserId}', [UserController::class, 'follwing'])->name('following');
-        Route::post('/{fromUserId}/follwing/{toUserId}/cancel', [UserController::class, 'cancelSendingFollowing'])->name('cancel_following');
+        Route::post('/{fromUserId}/follwing/{toUserId}', [UserController::class, 'following'])->name('following');
+        Route::post('/{fromUserId}/follwing/{toUserId}/accept', [UserController::class, 'acceptFollowing'])->name('accept_following');
+        Route::post('/{fromUserId}/follwing/{toUserId}/reject', [UserController::class, 'rejectFollowing'])->name('reject_following');
+        Route::post('/{fromUserId}/follwing/{toUserId}/cancel', [UserController::class, 'cancelSendingFollowing'])->name('cancel_sending_following');
     });
 
+    // Comment routes
     Route::prefix('comments')->name('comments.')->group(function () {
         // Action routes
         Route::post('/create/user/{userId}/post/{postId}', [CommentController::class, 'create'])->name('create');
+    });
+
+    // Payment routes
+    Route::post('vnpay_payment', [PaymentController::class, 'vnpayPayment'])->name('vnpay_payment');
+
+    // Notification routes
+    Route::prefix('notifications')->name('notifications.')->group(function () {
+        // View routes
+        Route::get('/', [NotificationController::class, 'getNotificationPage'])->name('get_notification_page');
+
+        // Action routes
     });
 });
 
 // Middleware cho notification fcm
 Route::group(['middleware' => 'auth'], function () {
-    Route::post('/store-token', [NotificationController::class, 'updateDeviceToken'])->name('store.token');
+    Route::post('/store-token', [NotificationController::class, 'storeDeviceToken'])->name('store.token');
 });

@@ -12,12 +12,15 @@
 
     <div class="rightContent">
         <div class="registerPremium">
-            <h2>Dang ky goi Premiun</h2>
+            <h2>Đăng ký hội viên</h2>
             <p>Đăng ký để mở khóa các tính năng mới và nếu đủ điều kiện, bạn sẽ được nhận một khoản chia sẻ doanh thu từ
                 quảng cáo.</p>
-            <x-common.button type="button">
-                Dang ky
-            </x-common.button>
+            <form action="{{ route('vnpay_payment') }}" method="POST" style="width: 100%">
+                @csrf
+                <x-common.button type="submit" name="redirect">
+                    Đăng ký
+                </x-common.button>
+            </form>
         </div>
 
         <div class="trend">

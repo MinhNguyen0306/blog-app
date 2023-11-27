@@ -11,6 +11,9 @@ class Follower extends Model
     use HasFactory;
     use SoftDeletes;
 
+    protected $primaryKey = null;
+    public $incrementing = false;
+
     protected $fillable = [
         'from_user_id',
         'to_user_id',

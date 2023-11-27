@@ -5,11 +5,24 @@
 <x-layouts.main-layout>
     <div class="homeContainer">
         <div class="homeHeader">
-            <div class="left">
-                <span>Tất cả</span>
+            <div class="tabItem">
+                <a href="{{ route('home') }}" class="tabLink">
+                    <div class="tabBox {{ Route::current('home') ? 'active' : '' }}">
+                        <span class="tabTitle">
+                            Dành cho bạn
+                        </span>
+                    </div>
+                </a>
             </div>
-            <div class="right">
-                Đang theo dõi
+
+            <div class="tabItem">
+                <a href="#" class="tabLink">
+                    <div class="tabBox">
+                        <span class="tabTitle">
+                            Đang theo dõi
+                        </span>
+                    </div>
+                </a>
             </div>
         </div>
 
@@ -63,7 +76,6 @@
                         @enderror
                     </div>
                     <div class="submit">
-                        <span>0/100</span>
                         <x-common.button type="submit">
                             Đăng bài
                         </x-common.button>
@@ -76,11 +88,6 @@
             @foreach ($posts as $post)
                 <x-common.post :post="$post" />
             @endforeach
-            {{-- <x-common.post />
-            <x-common.post />
-            <x-common.post />
-            <x-common.post />
-            <x-common.post /> --}}
         </div>
     </div>
 </x-layouts.main-layout>

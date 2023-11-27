@@ -64,11 +64,19 @@
                     max-width: 50px;
                     border-radius: 50%;
                     border: 2px solid gray;
+                    cursor: pointer;
                 }
 
                 .userInfo{
+                    cursor: pointer;
+
                     h3 {
                         font-size: large;
+                    }
+
+                    h3:hover {
+                        text-decoration: underline;
+                        text-underline-offset: .25rem;
                     }
 
                     span {

@@ -1,5 +1,5 @@
 <head>
-    @vite(['resources/scss/profile-page.scss', 'resources/scss/post.scss'])
+    @vite(['resources/scss/profile-page.scss'])
 </head>
 
 <x-layouts.main-layout>
@@ -27,7 +27,7 @@
                 @else
                     @if ($user->followers->where('from_user_id', '=', Auth::user()->id)->where('sending_status', '=', 'pending')->first())
                         <form
-                            action="{{ route('users.cancel_sending_following', ['fromUserId' => Auth::user()->id, 'toUserId' => $user->id]) }}"
+                            action="{{ route('users.cancel_following', ['fromUserId' => Auth::user()->id, 'toUserId' => $user->id]) }}"
                             method="POST">
                             @csrf
                             <x-common.button type='submit'>
@@ -36,7 +36,7 @@
                         </form>
                     @elseif($user->followers->where('from_user_id', '=', Auth::user()->id)->where('sending_status', '=', 'accepted')->first())
                         <form
-                            action="{{ route('users.following', ['fromUserId' => Auth::user()->id, 'toUserId' => $user->id]) }}"
+                            action="{{ route('users.cancel_following', ['fromUserId' => Auth::user()->id, 'toUserId' => $user->id]) }}"
                             method="POST">
                             @csrf
                             <x-common.button type='submit'>
@@ -87,16 +87,16 @@
         <div class="tabBar">
             <div class="tabItem">
                 <a href="{{ route('users.get_profile_view', $user->id) }}" class="tabLink">
-                    <div class="tabBox {{ Route::current('users.profile') ? 'active' : '' }}">
+                    <div class="tabBox">
                         <span class="tabTitle">
                             Bài đăng
                         </span>
                     </div>
                 </a>
             </div>
-            <div class="tabItem">
-                <a href="{{ route('users.get_request_followers', $user->id) }}" class="tabLink">
-                    <div class="tabBox">
+            <div class="tabItem current">
+                <a href="#" class="tabLink">
+                    <div class="tabBox active">
                         <span class="tabTitle">
                             Yêu cầu theo dõi
                         </span>
@@ -124,27 +124,9 @@
         </div>
 
         <div class="content">
-            @if ($user->posts && $user->posts->count() > 0)
-                @foreach ($user->posts as $post)
-                    <div class="postContainer" onclick="window.location='{{ route('posts.detail', $post->id) }}'">
-                        <div class="postInfoLimit">
-                            <p class="postTitle">
-                                {{ $post->title }}
-                            </p>
-                            <h5 class="lastChange">
-                                {{ floor((strtotime(date('Y-m-d H:i:s')) - strtotime($post->updated_at)) / 60 / 60 / 24) < 1
-                                    ? (floor((strtotime(date('Y-m-d H:i:s')) - strtotime($post->updated_at)) / 60 / 60) < 1
-                                        ? (floor((strtotime(date('Y-m-d H:i:s')) - strtotime($post->updated_at)) / 60) < 1
-                                            ? strtotime(date('Y-m-d H:i:s')) - strtotime($post->updated_at) . ' giây trước'
-                                            : floor((strtotime(date('Y-m-d H:i:s')) - strtotime($post->updated_at)) / 60) . ' phút trước')
-                                        : floor((strtotime(date('Y-m-d H:i:s')) - strtotime($post->updated_at)) / 60 / 60) . ' giờ trước')
-                                    : floor((strtotime(date('Y-m-d H:i:s')) - strtotime($post->updated_at)) / 60 / 60 / 24) . ' ngày trước' }}
-                            </h5>
-                            <p class="desc">
-                                {{ $post->content }}
-                            </p>
-                        </div>
-                    </div>
+            @if ($requestFollowings && $requestFollowings->count() > 0)
+                @foreach ($requestFollowings as $request)
+                    <x-common.follow-request :requestFollowing="$request" />
                 @endforeach
             @else
                 <span>Không có yêu cầu nào</span>

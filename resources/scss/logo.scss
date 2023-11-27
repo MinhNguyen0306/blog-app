@@ -2,6 +2,7 @@
 
 .logoContainer {
     @include flex(start, center);
+    cursor: pointer;
 
     img {
         max-width: 100px;

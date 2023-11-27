@@ -53,56 +53,6 @@
             }
             postComment.innerHTML = postComment.innerHTML + commentContainer;
         });
-
-    // FCM Notification
-    const firebaseConfig = {
-        apiKey: "AIzaSyAdM4qSbQC1ebmOJ77jTADPnNjN_2Y6kbw",
-        authDomain: "blog-app-laravel.firebaseapp.com",
-        projectId: "blog-app-laravel",
-        storageBucket: "blog-app-laravel.appspot.com",
-        messagingSenderId: "560468941993",
-        appId: "1:560468941993:web:52733e57a2cbfe143a5db8",
-        measurementId: "G-E4HEP83JYX"
-    };
-
-    // Initialize Firebase
-    const app = initializeApp(firebaseConfig);
-    const messaging = getMessaging(app);
-    const startFCM = () => {
-        messaging.requestPermission()
-            .then(() => {
-                return messaging.getToken();
-            })
-            .then((token) => {
-                const resp = fetch('{{ route('store.token') }}', {
-                    method: "POST",
-                    headers: {
-                        'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
-                    },
-                    body: JSON.stringify({
-                        token: token
-                    })
-                })
-
-                resp.then((response) => response.json())
-            })
-            .then((response) => {
-                if (response.success) alert('Token stored');
-                else alert('Token not stored');
-            })
-            .catch(function(error) {
-                alert(error)
-            })
-    }
-
-    messaging.onMessage(function(payload) {
-        const title = payload.notification.title;
-        const options = {
-            body: payload.notification.body,
-            icon: payload.notification.icon,
-        };
-        new Notification(title, options);
-    });
 </script>
 
 <x-layouts.main-layout>
@@ -119,22 +69,54 @@
 
         <div class="postContent">
             <div class="headerContent">
-                <div class="userContent">
+                <div class="userContent"
+                    onclick="window.location='{{ route('users.get_profile_view', $post->user->id) }}'">
                     <img src={{ $post->user->avatar ? asset('images/' . $post->user->avatar) : asset('images/user.png') }}
-                        alt="User Post Image"
-                        onclick="window.location='{{ route('users.get_profile_view', $post->user->id) }}'" />
+                        alt="User Post Image" />
                     <div class="userInfo">
-                        <h3 onclick="window.location='{{ route('users.get_profile_view', $post->user->id) }}'">
+                        <h3>
                             {{ $post->user->name }}
                         </h3>
                         <span>{{ $post->created_at }}</span>
                     </div>
                 </div>
-                <div>
-                    <x-common.button type='button'>
-                        Theo doi
-                    </x-common.button>
-                </div>
+                @if ($post->user->id === Auth::user()->id)
+                    <div>
+                        <x-common.button type='button'
+                            onclick="window.location='{{ route('users.get_profile_view', ['userId' => Auth::user()->id]) }}'">
+                            Xem profile
+                        </x-common.button>
+                    </div>
+                @else
+                    @if ($post->user->followers->where('from_user_id', '=', Auth::user()->id)->where('sending_status', '=', 'pending')->first())
+                        <form
+                            action="{{ route('users.cancel_following', ['fromUserId' => Auth::user()->id, 'toUserId' => $post->user->id]) }}"
+                            method="POST">
+                            @csrf
+                            <x-common.button type='submit'>
+                                Hủy yêu cầu
+                            </x-common.button>
+                        </form>
+                    @elseif($post->user->followers->where('from_user_id', '=', Auth::user()->id)->where('sending_status', '=', 'accepted')->first())
+                        <form
+                            action="{{ route('users.cancel_following', ['fromUserId' => Auth::user()->id, 'toUserId' => $post->user->id]) }}"
+                            method="POST">
+                            @csrf
+                            <x-common.button type='submit'>
+                                Đang theo dõi
+                            </x-common.button>
+                        </form>
+                    @else
+                        <form
+                            action="{{ route('users.following', ['fromUserId' => Auth::user()->id, 'toUserId' => $post->user->id]) }}"
+                            method="POST">
+                            @csrf
+                            <x-common.button type='submit'>
+                                Theo dõi
+                            </x-common.button>
+                        </form>
+                    @endif
+                @endif
             </div>
 
             <div class="mainContent">

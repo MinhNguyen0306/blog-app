@@ -55,6 +55,8 @@ class AuthController extends Controller
             return redirect()->route('home');
         }
 
+        toastr()->error("Sai email hoac mat khau");
+
         return redirect()->back()->with([
             'fail' => "Sai email hoac mat khau"
         ]);
@@ -106,9 +108,13 @@ class AuthController extends Controller
             }
         );
 
-        return $status === Password::PASSWORD_RESET
-            ? redirect()->route('login')->with('status', __($status))
-            : back()->withErrors(['email' => [__($status)]]);
+        if ($status === Password::PASSWORD_RESET) {
+            toastr()->success("Đã RESET mật khẩu");
+            return redirect()->route('login');
+        } else {
+            toastr()->error("RESET mật khẩu thất bại");
+            return redirect()->back();
+        }
     }
 
     public function verifyEmail(EmailVerificationRequest $request)
@@ -122,6 +128,7 @@ class AuthController extends Controller
     {
         $request->user()->sendEmailVerificationNotification();
 
+        toastr()->success('Verification link sent!');
         return back()->with('message', 'Verification link sent!');
     }
 

@@ -15,7 +15,7 @@ class CommentController extends Controller
 
     public function __construct(FCMService $fcmService)
     {
-        $this->$fcmService = $fcmService;
+        $this->fcmService = $fcmService;
     }
 
     public function getCommentOfPost(Post $post)
@@ -42,7 +42,7 @@ class CommentController extends Controller
         if ($createdComment) {
             toastr()->success("Da binh luan");
             broadcast(new NewComment($createdComment))->toOthers();
-            $this->fcmService->sendNotification($createdComment);
+            $this->fcmService->sendNotification($createdComment, $userId);
         } else {
             toastr()->error("Binh luan that bai");
         }

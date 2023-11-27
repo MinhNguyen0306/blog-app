@@ -9,18 +9,18 @@
     border-bottom: 1px solid gray;
     cursor: pointer;
 
-    img {
+    .userImage {
         width: 35px;
         height: 35px;
         border-radius: 50%;
         align-self: flex-start;
         background-color: aliceblue;
         object-fit: contain;
-    }
 
-    img:hover {
-        filter: brightness(0.75);
-        transition: .3s filter;
+        &:hover {
+            filter: brightness(0.75);
+            transition: .3s filter;
+        }
     }
 
     .postInfo {
@@ -72,6 +72,15 @@
                 font-size: larger;
                 letter-spacing: .025rem;
             }
+
+            .postImage {
+                width: 100%;
+                max-height: 25rem;
+                object-fit: contain;
+                margin: 1rem 0;
+                border: 1px solid gray;
+                border-radius: $border-radius;
+            }
         }
 
         .postAction {
@@ -85,32 +94,82 @@
                 flex: 1;
                 cursor: pointer;
 
-                .icon, span {
-                    display: inline;
-                    vertical-align: middle;
+                label {
+                    width: 24px;
+                    cursor: pointer;
+                }
+
+                .icon {
                     margin-right: .25rem;
                 }
 
                 .icon {
                     max-width: 18px;
                 }
+
+                .btnAction {
+                    background-color: transparent;
+                    border: none;
+                    color: gray;
+                    cursor: pointer;
+                }
+
+                & > * {
+                    display: inline-block;
+                    vertical-align: middle;
+                }
             }
 
-            #likeAction:hover {
+            #likeAction:hover, .hasLike {
                 color: rgb(228, 27, 135);
+                button {
+                    color: rgb(228, 27, 135);
+                }
             }
 
             #shareAction:hover {
                 color: rgb(2, 178, 2);
+                button {
+                    color: rgb(2, 178, 2);
+                }
             }
 
             #commentAction:hover {
                 color: rgb(0, 115, 255);
+                button {
+                    color: rgb(0, 115, 255);
+                }
             }
         }
     }
+
+    &:hover {
+        background-color: $main-color;
+    }
 }
 
-.postContainer:hover {
-    background-color: $main-color;
+.postInfoLimit {
+    max-height: 100px;
+
+    .postTitle {
+        font-weight: 700;
+        font-size: large;
+        word-break: break-all;
+        letter-spacing: .025rem;
+    }
+
+    .lastChange {
+        font-size: small;
+        margin-bottom: 1rem;
+        margin-top: .2rem;
+        color: gray;
+        font-weight: 100;
+    }
+
+    .desc {
+        word-break: break-all;
+        text-overflow: ellipsis;
+        overflow: hidden;
+        font-size: small;
+    }
 }

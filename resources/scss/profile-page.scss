@@ -70,8 +70,15 @@
                 font-weight: 700;
             }
 
-            .infoEmail, .registerDate {
-                color: blanchedalmond;
+            .registerDate {
+                & > * {
+                    display: inline;
+                    vertical-align: middle;
+
+                    &:last-child {
+                        margin-left: .5rem;
+                    }
+                }
             }
 
             .interaction {
@@ -80,6 +87,11 @@
                 div {
                     cursor: pointer;
                     margin-right: 1rem;
+
+                    &:hover {
+                        text-decoration: underline;
+                        text-underline-offset: .5rem;
+                    }
                 }
 
                 span {
@@ -90,20 +102,11 @@
                 .followNumber {
                     font-weight: 500;
                 }
-
-                .registerDate {
-                    @include flex(start, center);
-                }
             }
 
-            .interaction div:hover {
-                text-decoration: underline;
-                text-underline-offset: .5rem;
+            & > *:not(:last-child) {
+                margin-bottom: 1.25rem;
             }
-        }
-
-        .info > *:not(:last-child) {
-            margin-bottom: 1.5rem;
         }
     }
 
@@ -127,14 +130,29 @@
                 box-shadow: 0px -5px 0px 0px blue inset;
                 transition: .3s all;
             }
-        }
 
-        .tabItem:hover {
-            background-color: gray;
-            transition: .3s background-color;
+            &:not(.current):hover {
+                background-color: gray;
+                transition: .3s background-color;
+            }
         }
     }
 
     .content {
+        @include flex(start, start);
+        flex-direction: column;
+        width: 100%;
+        padding: 1rem;
+        margin-top: .5rem;
+
+        span {
+            width: 100%;
+            text-align: center;
+            font-size: larger;
+            font-weight: 500;
+            color: gray;
+            margin-top: 2rem;
+        }
     }
+
 }

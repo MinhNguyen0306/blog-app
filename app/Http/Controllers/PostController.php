@@ -2,8 +2,10 @@
 
 namespace App\Http\Controllers;
 
+use App\Events\LikeEvent;
 use App\Http\Requests\PostRequest;
 use App\Models\Category;
+use App\Models\LikePost;
 use App\Models\Post;
 use App\Models\Share;
 use App\Models\User;
@@ -166,6 +168,7 @@ class PostController extends Controller
             $share = $user->shares()
                 ->where('post_id', $postId)
                 ->first();
+
             if ($share) {
                 if ($share->isPublished === false) {
                     $share->isPublished = true;
@@ -177,20 +180,49 @@ class PostController extends Controller
 
                 toastr()->error('Ban da chia se post nay roi!');
                 return redirect()->back();
+            }
+
+            $freshShare = new Share();
+            $freshShare->post_id = $postId;
+            $freshShare->user_id = $userId;
+            $freshShare->isPublished = true;
+            $freshShare->shareContent = "";
+            $createdShare = $freshShare->save();
+
+            if ($createdShare) {
+                toastr()->success("Share post thanh cong");
             } else {
-                $freshShare = new Share();
-                $freshShare->post_id = $postId;
-                $freshShare->user_id = $userId;
-                $freshShare->isPublished = true;
-                $createdShare = $freshShare->save();
-                if ($createdShare) {
-                    toastr()->success("Share post thanh cong");
-                } else {
-                    toastr()->error("Share post that bai");
-                }
+                toastr()->error("Share post that bai");
             }
         } catch (ModelNotFoundException $ex) {
             toastr()->error("Resource not found exception with " . $userId);
+        } finally {
+            return redirect()->back();
+        }
+    }
+
+    public function likePost($userId, $postId)
+    {
+        try {
+            $user = User::findOrFail($userId);
+
+            $checkLike = $user->likes
+                ->where('post_id', $postId)
+                ->first();
+
+            if (!$checkLike) {
+                $createdLikePost = LikePost::create([
+                    'user_id' => $userId,
+                    'post_id' => $postId,
+                    'has_like' => true
+                ]);
+
+                if (!$createdLikePost) toastr('Server Error');
+            } else {
+                $checkLike->update(['has_like' => false]);
+            }
+        } catch (ModelNotFoundException $e) {
+            toastr($e->getMessage());
         } finally {
             return redirect()->back();
         }

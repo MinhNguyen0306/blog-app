@@ -1,8 +1,6 @@
 // Import the functions you need from the SDKs you need
-import { initializeApp } from "firebase/app";
-import { getAnalytics } from "firebase/analytics";
-import { getMessaging } from "firebase/messaging/sw";
-import { onBackgroundMessage } from "firebase/messaging/sw";
+importScripts('https://www.gstatic.com/firebasejs/8.3.2/firebase-app.js');
+importScripts('https://www.gstatic.com/firebasejs/8.3.2/firebase-messaging.js');
 // TODO: Add SDKs for Firebase products that you want to use
 // https://firebase.google.com/docs/web/setup#available-libraries
 
@@ -19,11 +17,10 @@ const firebaseConfig = {
 };
 
 // Initialize Firebase
-const app = initializeApp(firebaseConfig);
-const analytics = getAnalytics(app);
+const app = firebase.initializeApp(firebaseConfig);
 
-const messaging = getMessaging(app);
-messaging.setBackgroundMessageHandler(messaging, (payload) => {
+const messaging = firebase.messaging(app);
+messaging.setBackgroundMessageHandler((payload) => {
     console.log("Message received.", payload);
 
     // Customize Message

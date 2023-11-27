@@ -2,6 +2,7 @@
     @vite('resources/scss/button.scss')
 </head>
 
-<button type="{{ $type }}" {{ $attributes->class(['buttonContainer'])->merge(['type' => 'button']) }}>
+<button type="{{ $type }}" name="{{ $name }}"
+    {{ $attributes->class(['buttonContainer'])->merge(['type' => 'button']) }}>
     {{ $slot }}
 </button>

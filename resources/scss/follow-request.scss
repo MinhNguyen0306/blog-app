@@ -1,0 +1,43 @@
+@use './config/index' as *;
+
+.box {
+    @include flex(space-between, center);
+    width: 100%;
+    margin-bottom: .5rem;
+
+    .userInfo {
+        @include flex(start, center);
+        column-gap: .5rem;
+        cursor: pointer;
+
+        img {
+            max-width: 50px;
+            border-radius: 50%;
+            border: 1px solid gray;
+        }
+
+        .info {
+            h3 {
+                font-weight: 600;
+
+                &:hover {
+                    text-decoration: underline;
+                    text-underline-offset: .2rem;
+                }
+            }
+
+            span {
+                font-weight: lighter;
+                font-size: smaller;
+            }
+        }
+    }
+}
+
+.handleAction {
+    & > * {
+        display: inline-block;
+        margin-left: .5rem;
+        width: 7rem;
+    }
+}
